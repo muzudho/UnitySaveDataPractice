@@ -155,4 +155,70 @@ public class InputManager : MonoBehaviour
 ![ramen-tabero-futsu2.png](https://crieit.now.sh/upload_images/d27ea8dcfad541918d9094b9aed83e7d61daf8532bbbe.png)  
 「　うまくやってくれだぜ」  
 
+# まず、 PlayerPrefs を練習しようぜ？
+
+![202303_unity_12-0002--loadButton-1.png](https://crieit.now.sh/upload_images/33f01c48d2ec58268bc1932413f76681640c98527113f.png)  
+
+![ramen-tabero-futsu2.png](https://crieit.now.sh/upload_images/d27ea8dcfad541918d9094b9aed83e7d61daf8532bbbe.png)  
+「　👆　セーブボタンだけあっても練習できない。ロードボタンも追加するぜ」  
+
+`SaveDataManager.cs` :  
+
+```csharp
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SaveDataManager : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    // - イベントハンドラ
+
+    public void OnSave()
+    {
+        Debug.Log("セーブします");
+
+        var goCube = GameObject.Find("Cube");
+        PlayerPrefs.SetFloat("x", goCube.transform.position.x);
+        PlayerPrefs.SetFloat("y", goCube.transform.position.y);
+        PlayerPrefs.SetFloat("z", goCube.transform.position.z);
+    }
+
+    public void OnLoad()
+    {
+        Debug.Log("ロードします");
+
+        var goCube = GameObject.Find("Cube");
+        var x = PlayerPrefs.GetFloat("x");
+        var y = PlayerPrefs.GetFloat("y");
+        var z = PlayerPrefs.GetFloat("z");
+        goCube.transform.position = new Vector3(x, y, z);
+    }
+}
+```
+
+![ramen-tabero-futsu2.png](https://crieit.now.sh/upload_images/d27ea8dcfad541918d9094b9aed83e7d61daf8532bbbe.png)  
+「　👆　これで　思ってるように　セーブとロードは　でけた」  
+
+![ramen-tabero-futsu2.png](https://crieit.now.sh/upload_images/d27ea8dcfad541918d9094b9aed83e7d61daf8532bbbe.png)  
+「　バカでかい容量のセーブをしたいとき　こんなシンプルな構造で　対応しきれるのかだぜ？
+クラスを　シリアライズ／デシリアライズ　して　投げ込めないの？」  
+
+![kifuwarabe-futsu.png](https://crieit.now.sh/upload_images/beaf94b260ae2602ca8cf7f5bbc769c261daf8686dbda.png)  
+「　`String` 型のセッターに　JSON を投げ込めだぜ」  
+
+![ramen-tabero-futsu2.png](https://crieit.now.sh/upload_images/d27ea8dcfad541918d9094b9aed83e7d61daf8532bbbe.png)  
+「　そんなこと　していいのかな……」  
+
 # // 書きかけ

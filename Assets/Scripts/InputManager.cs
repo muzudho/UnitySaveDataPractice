@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class InputManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -28,14 +26,11 @@ public class InputManager : MonoBehaviour
             {
                 // レイが当たったオブジェクト
                 string goName = hit.collider.gameObject.name;
-                Debug.Log("右クリック:" + goName);
 
-                // そのオブジェクトの中心位置を、クリックした場所へ移動（カクカクした動き）
+                // そのオブジェクトの中心位置を、クリックした場所へ移動
+                //
+                // - マウスを速く動かすと　キューブの外にマウスが外れてしまう（掴んでいたものを放してしまう）
                 GameObject.Find(goName).transform.position = new Vector3(hit.point.x, hit.point.y, 0);
-            }
-            else
-            {
-                Debug.Log("右クリック 外れ");
             }
 
             // レイを描く

@@ -56,24 +56,30 @@ public class SaveDataManager : MonoBehaviour
         var jsonText = JsonUtility.ToJson(saveDataModel);
 
         // 保存
-        Debug.Log($"{(dropdown.value)}+1番へ、セーブしたい。 Json:{jsonText}");
-        PlayerPrefs.SetString($"Slot{dropdown.value}", jsonText);
+        var slotNth = dropdown.value + 1;
+        Debug.Log($"Save to Slot{(slotNth)}. Json:{jsonText}");
+        PlayerPrefs.SetString($"Slot{slotNth}", jsonText);
     }
 
     public void OnLoad()
     {
+        var slotNth = dropdown.value + 1;
+
         // 読取（JSONテキスト取得）
-        var jsonText = PlayerPrefs.GetString($"Slot{dropdown.value}");
-        Debug.Log($"{(dropdown.value)}+1番から、ロードしたい。 Json:{jsonText}");
+        //
+        // - 保存されていなければ空文字列
+        var jsonText = PlayerPrefs.GetString($"Slot{slotNth}");
 
         // セーブデータ・モデルへ復元
         var saveDataModel2 = JsonUtility.FromJson<ModelOfSaveData.Init>(jsonText);
         if (saveDataModel2==null)
         {
             // 復元できません
-            Debug.Log($"{(dropdown.value)}+1番 ロードできませんでした。 Json:{jsonText}");
+            Debug.Log($"Failed to load from Slot{slotNth}");
             return;
         }
+
+        Debug.Log($"Load from Slot{slotNth}. Json:{jsonText}");
 
         // 記憶されているゲームオブジェクトを取出し
         foreach (var gameObject2 in saveDataModel2.gameObjects)

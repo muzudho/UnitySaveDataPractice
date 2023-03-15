@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using ModelOfSaveData = Assets.Scripts.Models.SaveData;
-    using UnityEngine;
 
+    /// <summary>
+    /// セーブ・データ
+    /// </summary>
     public class Init
     {
         // - その他

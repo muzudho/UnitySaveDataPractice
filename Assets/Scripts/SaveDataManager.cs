@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using ModelOfSaveData = Assets.Scripts.Models.SaveData;
 
 public class SaveDataManager : MonoBehaviour
 {
@@ -54,6 +55,17 @@ public class SaveDataManager : MonoBehaviour
             PlayerPrefs.SetFloat($"{nameSpace}.y", gameObject.transform.position.y);
             PlayerPrefs.SetFloat($"{nameSpace}.z", gameObject.transform.position.z);
         }
+
+        // TODO ★ セーブデータモデルの作成
+        var saveDataModel = new ModelOfSaveData.Init();
+        foreach (var gameObjectName in gameObjectNamesToSave)
+        {
+            var gameObject = GameObject.Find(gameObjectName);
+            var gameObject2 = ModelOfSaveData.GameObject.FromGameObject(gameObject);
+            saveDataModel.AddGameObject(gameObject2);
+        }
+
+        Debug.Log($"Json:{JsonUtility.ToJson(saveDataModel)}");
     }
 
     public void OnLoad()

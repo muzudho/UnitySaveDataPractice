@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using ModelOfSaveData = Assets.Scripts.Models.SaveData;
+    using UnityEngine;
 
     public class Init
     {
@@ -14,6 +15,7 @@
 
         // - フィールド
 
+        // JsonUtilクラスは、Dictionary型には対応していない
         public List<ModelOfSaveData.GameObject> gameObjects;
 
         // - メソッド

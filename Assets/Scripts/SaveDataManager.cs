@@ -44,21 +44,10 @@ public class SaveDataManager : MonoBehaviour
 
     public void OnSave()
     {
-        //Debug.Log($"{(dropdown.value)}+1番へ、セーブしたい");
-
-        //foreach (var gameObjectName in gameObjectNamesToSave)
-        //{
-        //    var gameObject = GameObject.Find(gameObjectName);
-        //    // ゲームオブジェクトの名前には、いろんな文字が使えるので、区切りなるような文字がない。とりあえずドット区切りにする
-        //    var nameSpace = $"Slot{dropdown.value}.{gameObjectName}";
-
-        //    PlayerPrefs.SetFloat($"{nameSpace}.x", gameObject.transform.position.x);
-        //    PlayerPrefs.SetFloat($"{nameSpace}.y", gameObject.transform.position.y);
-        //    PlayerPrefs.SetFloat($"{nameSpace}.z", gameObject.transform.position.z);
-        //}
-
-        // TODO ★ セーブデータモデルの作成
+        // セーブデータ・モデルの作成
         var saveDataModel = new ModelOfSaveData.Init();
+
+        // 記憶したいゲームオブジェクトを格納
         foreach (var gameObjectName in gameObjectNamesToSave)
         {
             var gameObject = GameObject.Find(gameObjectName);
@@ -66,36 +55,34 @@ public class SaveDataManager : MonoBehaviour
             saveDataModel.AddGameObject(gameObject2);
         }
 
+        // JSON文字列化（シリアライズ）
         var jsonText = JsonUtility.ToJson(saveDataModel);
+
+        // 保存
         Debug.Log($"{(dropdown.value)}+1番へ、セーブしたい。 Json:{jsonText}");
         PlayerPrefs.SetString($"Slot{dropdown.value}", jsonText);
     }
 
     public void OnLoad()
     {
-        //Debug.Log($"{(dropdown.value)}+1番から、ロードしたい");
-
-        //foreach (var gameObjectName in gameObjectNamesToSave)
-        //{
-        //    var gameObject = GameObject.Find(gameObjectName);
-        //    // ゲームオブジェクトの名前には、いろんな文字が使えるので、区切りなるような文字がない。とりあえずドット区切りにする
-        //    var nameSpace = $"Slot{dropdown.value}.{gameObjectName}";
-
-        //    gameObject.transform.position = new Vector3(
-        //        PlayerPrefs.GetFloat($"{nameSpace}.x"),
-        //        PlayerPrefs.GetFloat($"{nameSpace}.y"),
-        //        PlayerPrefs.GetFloat($"{nameSpace}.z"));
-        //}
-
-        // TODO ★ セーブデータをロード
+        // 読取（JSONテキスト取得）
         var jsonText = PlayerPrefs.GetString($"Slot{dropdown.value}");
         Debug.Log($"{(dropdown.value)}+1番から、ロードしたい。 Json:{jsonText}");
 
+        // セーブデータ・モデルへ復元
         var saveDataModel2 = JsonUtility.FromJson<ModelOfSaveData.Init>(jsonText);
+        if (saveDataModel2==null)
+        {
+            // 復元できません
+            Debug.Log($"{(dropdown.value)}+1番 ロードできませんでした。 Json:{jsonText}");
+            return;
+        }
+
+        // 記憶されているゲームオブジェクトを取出し
         foreach (var gameObject2 in saveDataModel2.gameObjects)
         {
             var gameObject = GameObject.Find(gameObject2.name);
-            gameObject.transform.position = new Vector3(gameObject2.x, gameObject2.y, gameObject2.z);
+            gameObject.transform.position = gameObject2.ToPosition();
         }
     }
 }

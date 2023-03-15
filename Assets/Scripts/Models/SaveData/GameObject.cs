@@ -10,6 +10,11 @@
     {
         // -^ その他
 
+        /// <summary>
+        /// 生成
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <returns></returns>
         internal static GameObject FromGameObject(UnityEngine.GameObject gameObject)
         {
             return new GameObject
@@ -27,5 +32,12 @@
         public float x;
         public float y;
         public float z;
+
+        // - メソッド
+
+        internal Vector3 ToPosition()
+        {
+            return new Vector3(this.x, this.y, this.z);
+        }
     }
 }
